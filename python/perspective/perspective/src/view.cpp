@@ -257,7 +257,7 @@ make_view(std::shared_ptr<Table> table, const std::string& name, const std::stri
 
     std::shared_ptr<t_view_config> config = make_view_config<t_val>(gnode, schema, date_parser, view_config);
     {
-        PerspectiveScopedGILRelease acquire(table->get_pool()->get_event_loop_thread_id());
+        PerspectiveScopedGILRelease acquire(table->get_pool()->get_event_loop_thread_id(), table->get_pool()->get_lock(), true);
         auto ctx = make_context<CTX_T>(table, schema, config, name);
         auto view_ptr = std::make_shared<View<CTX_T>>(table, ctx, name, separator, config);
         return view_ptr;
@@ -301,7 +301,7 @@ to_arrow_unit(
     std::int32_t start_col,
     std::int32_t end_col
 ) {
-    PerspectiveScopedGILRelease acquire(view->get_event_loop_thread_id());
+    PerspectiveScopedGILRelease acquire(view->get_event_loop_thread_id(), view->get_lock(), true);
     std::shared_ptr<std::string> str = 
         view->to_arrow(start_row, end_row, start_col, end_col);
     return py::bytes(*str);
@@ -315,7 +315,7 @@ to_arrow_zero(
     std::int32_t start_col,
     std::int32_t end_col
 ) {
-    PerspectiveScopedGILRelease acquire(view->get_event_loop_thread_id());
+    PerspectiveScopedGILRelease acquire(view->get_event_loop_thread_id(), view->get_lock(), true);
     std::shared_ptr<std::string> str = 
         view->to_arrow(start_row, end_row, start_col, end_col);
     return py::bytes(*str);
@@ -329,7 +329,7 @@ to_arrow_one(
     std::int32_t start_col, 
     std::int32_t end_col
 ) {
-    PerspectiveScopedGILRelease acquire(view->get_event_loop_thread_id());
+    PerspectiveScopedGILRelease acquire(view->get_event_loop_thread_id(), view->get_lock(), true);
     std::shared_ptr<std::string> str = 
         view->to_arrow(start_row, end_row, start_col, end_col);
     return py::bytes(*str);
@@ -343,7 +343,7 @@ to_arrow_two(
     std::int32_t start_col, 
     std::int32_t end_col
 ) {
-    PerspectiveScopedGILRelease acquire(view->get_event_loop_thread_id());
+    PerspectiveScopedGILRelease acquire(view->get_event_loop_thread_id(), view->get_lock(), true);
     std::shared_ptr<std::string> str = 
         view->to_arrow(start_row, end_row, start_col, end_col);
     return py::bytes(*str);
@@ -356,7 +356,7 @@ to_arrow_two(
 
 py::bytes
 get_row_delta_unit(std::shared_ptr<View<t_ctxunit>> view) {
-    PerspectiveScopedGILRelease acquire(view->get_event_loop_thread_id());
+    PerspectiveScopedGILRelease acquire(view->get_event_loop_thread_id(), view->get_lock(), true);
     std::shared_ptr<t_data_slice<t_ctxunit>> slice = view->get_row_delta();
     std::shared_ptr<std::string> arrow = view->data_slice_to_arrow(slice);
     return py::bytes(*arrow);
@@ -364,7 +364,7 @@ get_row_delta_unit(std::shared_ptr<View<t_ctxunit>> view) {
 
 py::bytes
 get_row_delta_zero(std::shared_ptr<View<t_ctx0>> view) {
-    PerspectiveScopedGILRelease acquire(view->get_event_loop_thread_id());
+    PerspectiveScopedGILRelease acquire(view->get_event_loop_thread_id(), view->get_lock(), true);
     std::shared_ptr<t_data_slice<t_ctx0>> slice = view->get_row_delta();
     std::shared_ptr<std::string> arrow = view->data_slice_to_arrow(slice);
     return py::bytes(*arrow);
@@ -372,7 +372,7 @@ get_row_delta_zero(std::shared_ptr<View<t_ctx0>> view) {
 
 py::bytes
 get_row_delta_one(std::shared_ptr<View<t_ctx1>> view) {
-    PerspectiveScopedGILRelease acquire(view->get_event_loop_thread_id());
+    PerspectiveScopedGILRelease acquire(view->get_event_loop_thread_id(), view->get_lock(), true);
     std::shared_ptr<t_data_slice<t_ctx1>> slice = view->get_row_delta();
     std::shared_ptr<std::string> arrow = view->data_slice_to_arrow(slice);
     return py::bytes(*arrow);
@@ -381,7 +381,7 @@ get_row_delta_one(std::shared_ptr<View<t_ctx1>> view) {
 py::bytes
 get_row_delta_two(
     std::shared_ptr<View<t_ctx2>> view) {
-    PerspectiveScopedGILRelease acquire(view->get_event_loop_thread_id());
+    PerspectiveScopedGILRelease acquire(view->get_event_loop_thread_id(), view->get_lock(), true);
     std::shared_ptr<t_data_slice<t_ctx2>> slice = view->get_row_delta();
     std::shared_ptr<std::string> arrow = view->data_slice_to_arrow(slice);
     return py::bytes(*arrow);

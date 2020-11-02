@@ -82,7 +82,7 @@ std::shared_ptr<Table> make_table_py(
         }
 
         {
-            PerspectiveScopedGILRelease acquire(pool->get_event_loop_thread_id());
+            PerspectiveScopedGILRelease acquire(pool->get_event_loop_thread_id(), pool->get_lock(), true);
 
             // With the GIL released, load the arrow
             if (is_csv) {
@@ -256,7 +256,7 @@ std::shared_ptr<Table> make_table_py(
     std::uint32_t row_count;
 
     if (is_arrow) {
-        PerspectiveScopedGILRelease acquire(pool->get_event_loop_thread_id());
+        PerspectiveScopedGILRelease acquire(pool->get_event_loop_thread_id(), pool->get_lock(), true);
         row_count = arrow_loader.row_count();
         data_table.extend(arrow_loader.row_count());
         arrow_loader.fill_table(data_table, input_schema, index, offset, limit, is_update);
