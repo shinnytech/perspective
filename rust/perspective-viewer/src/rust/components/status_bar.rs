@@ -21,7 +21,7 @@ use yew::prelude::*;
 #[cfg(test)]
 use crate::utils::WeakScope;
 
-#[derive(Properties, Clone)]
+#[derive(Properties)]
 pub struct StatusBarProps {
     pub id: String,
     pub on_reset: Callback<bool>,
@@ -182,8 +182,8 @@ impl Component for StatusBar {
                     .map(SelectItem::Option)
                     .collect::<Vec<_>>();
 
-                if values.len() > 1 {
-                    html! {
+                html! {
+                    if values.len() > 1 {
                         <span id="theme" class="button">
                             <Select<String>
                                 id="theme_selector"
@@ -193,8 +193,6 @@ impl Component for StatusBar {
                             </Select<String>>
                         </span>
                     }
-                } else {
-                    html! {}
                 }
             }
         };
@@ -240,14 +238,16 @@ impl Component for StatusBar {
 impl StatusBar {
     const fn status_class_name(&self, stats: &Option<TableStats>) -> &'static str {
         match stats {
-            Some(TableStats {
-                num_rows: Some(_),
-                virtual_rows: Some(_),
-                is_pivot: true,
-            })
-            | Some(TableStats {
-                num_rows: Some(_), ..
-            }) => "connected",
+            Some(
+                TableStats {
+                    num_rows: Some(_),
+                    virtual_rows: Some(_),
+                    is_pivot: true,
+                }
+                | TableStats {
+                    num_rows: Some(_), ..
+                },
+            ) => "connected",
             Some(TableStats { num_rows: None, .. }) => "initializing",
             None => "uninitialized",
         }

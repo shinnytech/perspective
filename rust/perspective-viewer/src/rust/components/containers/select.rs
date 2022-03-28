@@ -22,7 +22,7 @@ pub enum SelectMsg<T> {
     SelectedChanged(T),
 }
 
-#[derive(Properties, Clone)]
+#[derive(Properties)]
 pub struct SelectProps<T>
 where
     T: Clone + Display + FromStr + PartialEq + 'static,

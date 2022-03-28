@@ -83,7 +83,7 @@ macro_rules! test_html {
 
         struct TestElement {}
 
-        #[derive(Properties, Clone, PartialEq)]
+        #[derive(Properties, PartialEq)]
         struct TestElementProps {
             html: Html
         }
@@ -129,6 +129,6 @@ macro_rules! test_html {
             .unwrap()
             .unchecked_into::<web_sys::Element>();
 
-        yew::start_app_with_props_in_element::<TestElement>(shadow_root, TestElementProps { html: html!{ $($html)* } })
+        yew::Renderer::<TestElement>::with_root_and_props(shadow_root, TestElementProps { html: html!{ $($html)* } }).render()
     }}
 }

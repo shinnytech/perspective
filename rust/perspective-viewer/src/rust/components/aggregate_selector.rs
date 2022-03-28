@@ -15,7 +15,7 @@ use crate::*;
 
 use yew::prelude::*;
 
-#[derive(Properties, Clone)]
+#[derive(Properties)]
 pub struct AggregateSelectorProps {
     pub column: String,
     pub aggregate: Option<Aggregate>,

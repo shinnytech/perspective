@@ -21,7 +21,7 @@ pub enum DropDownMenuMsg {
     SetPos(i32, i32),
 }
 
-#[derive(Properties, Clone, PartialEq)]
+#[derive(Properties, PartialEq)]
 pub struct DropDownMenuProps<T>
 where
     T: Into<Html> + Clone + PartialEq + 'static,

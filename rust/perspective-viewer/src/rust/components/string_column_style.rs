@@ -138,7 +138,7 @@ pub enum StringColumnStyleMsg {
     ColorChanged(String),
 }
 
-#[derive(Properties, Clone)]
+#[derive(Properties)]
 pub struct StringColumnStyleProps {
     #[prop_or_default]
     pub config: StringColumnStyleConfig,
@@ -285,7 +285,7 @@ impl Component for StringColumnStyle {
                 html_template! {
                     <span class="row">{ "Foreground" }</span>
                     <div class="row section inner_section">
-                        <ColorSelector with self.color_props(ctx) />
+                        <ColorSelector ..self.color_props(ctx) />
                     </div>
                 }
             } else {
@@ -299,7 +299,7 @@ impl Component for StringColumnStyle {
                 html_template! {
                     <span class="row">{ "Background" }</span>
                     <div class="row section inner_section">
-                        <ColorSelector with self.color_props(ctx) />
+                        <ColorSelector ..self.color_props(ctx) />
                     </div>
                 }
             } else {
@@ -312,7 +312,7 @@ impl Component for StringColumnStyle {
             html_template! {
                 <span class="row">{ "Series" }</span>
                 <div class="row section inner_section">
-                    <ColorSelector with self.color_props(ctx) />
+                    <ColorSelector ..self.color_props(ctx) />
                 </div>
             }
         } else {

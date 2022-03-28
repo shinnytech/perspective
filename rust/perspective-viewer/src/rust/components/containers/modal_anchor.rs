@@ -8,7 +8,7 @@
 
 use yew::prelude::*;
 
-#[derive(Properties, Clone, PartialEq)]
+#[derive(Properties, PartialEq)]
 pub struct ModalAnchorProps {
     pub top: i32,
     pub left: i32,

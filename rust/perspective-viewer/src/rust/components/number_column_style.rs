@@ -138,7 +138,7 @@ pub enum NumberColumnStyleMsg {
 /// A `ColumnStyle` component is mounted to the window anchored at the screen
 /// position of `elem`.  It needs two input configs, the current configuration
 /// object and a default version without `Option<>`
-#[derive(Properties, Clone)]
+#[derive(Properties)]
 pub struct NumberColumnStyleProps {
     #[prop_or_default]
     pub config: NumberColumnStyleConfig,
@@ -332,7 +332,7 @@ impl Component for NumberColumnStyle {
             html_template! {
                 <span class="row">{ "Foreground" }</span>
                 <div class="row section inner_section">
-                    <ColorRangeSelector with self.color_props(ctx) />
+                    <ColorRangeSelector ..self.color_props(ctx) />
                 </div>
             }
         } else {
@@ -345,7 +345,7 @@ impl Component for NumberColumnStyle {
             html_template! {
                 <span class="row">{ "Background" }</span>
                 <div class="row section inner_section">
-                    <ColorRangeSelector with self.color_props(ctx) />
+                    <ColorRangeSelector ..self.color_props(ctx) />
                 </div>
             }
         } else {
@@ -358,8 +358,8 @@ impl Component for NumberColumnStyle {
             html_template! {
                 <span class="row">{ "Gradient" }</span>
                 <div class="row section inner_section">
-                    <ColorRangeSelector with self.color_props(ctx) />
-                    <MaxValueChooser with self.max_value_props(ctx) />
+                    <ColorRangeSelector ..self.color_props(ctx) />
+                    <MaxValueChooser ..self.max_value_props(ctx) />
                 </div>
             }
         } else {
@@ -372,8 +372,8 @@ impl Component for NumberColumnStyle {
             html_template! {
                 <span class="row">{ "Bar" }</span>
                 <div class="row section inner_section">
-                    <ColorRangeSelector with self.color_props(ctx) />
-                    <MaxValueChooser with self.max_value_props(ctx) />
+                    <ColorRangeSelector ..self.color_props(ctx) />
+                    <MaxValueChooser ..self.max_value_props(ctx) />
                 </div>
             }
         } else {
@@ -435,7 +435,7 @@ impl Component for NumberColumnStyle {
     }
 }
 
-#[derive(Properties, PartialEq, Clone)]
+#[derive(Properties, PartialEq)]
 pub struct MaxValueChooserProps {
     max_value: f64,
     on_max_value: Callback<String>,

@@ -123,11 +123,13 @@ pub async fn test_plugin_selected() {
         </PluginSelector>
     };
 
+    await_animation_frame().await.unwrap();
     let plugin_selector = link.borrow().clone().unwrap();
     plugin_selector.send_message(PluginSelectorMsg::ComponentSelectPlugin(
         "Debug B".to_owned(),
     ));
 
+    await_animation_frame().await.unwrap();
     assert_eq!(
         result.borrow().as_ref().map(|x| x.name()),
         Some("Debug B".to_owned())

@@ -29,7 +29,7 @@ use yew::prelude::*;
 
 pub static CSS: &str = include_str!("../../../build/css/viewer.css");
 
-#[derive(Properties, Clone)]
+#[derive(Properties)]
 pub struct PerspectiveViewerProps {
     pub elem: web_sys::HtmlElement,
     pub session: Session,
@@ -231,7 +231,7 @@ impl Component for PerspectiveViewer {
                         class="noselect button"
                         onmousedown={ settings }>
                     </div>
-                    <FontLoader with self.fonts.clone()></FontLoader>
+                    <FontLoader ..self.fonts.clone()></FontLoader>
                 </>
             }
         } else {
@@ -247,7 +247,7 @@ impl Component for PerspectiveViewer {
                         <slot></slot>
                     </div>
                     <div id="settings_button" class="noselect button" onmousedown={ settings }></div>
-                    <FontLoader with self.fonts.clone()></FontLoader>
+                    <FontLoader ..self.fonts.clone()></FontLoader>
                 </>
             }
         }
@@ -285,7 +285,7 @@ impl PerspectiveViewer {
             }
             Some(_) | None => {
                 let force = !is_open;
-                let callback = ctx.link().callback_once(move |resolve| {
+                let callback = ctx.link().callback(move |resolve| {
                     let update = SettingsUpdate::Update(force);
                     Msg::ToggleSettingsComplete(update, resolve)
                 });

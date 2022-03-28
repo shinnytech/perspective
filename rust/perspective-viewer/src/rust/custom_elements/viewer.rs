@@ -174,7 +174,7 @@ impl PerspectiveViewerElement {
             weak_link: WeakScope::default(),
         };
 
-        let root = yew::start_app_with_props_in_element(shadow_root, props);
+        let root = yew::Renderer::with_root_and_props(shadow_root, props).render();
 
         // Create callbacks
         let update_sub = session.table_updated.add_listener({

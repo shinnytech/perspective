@@ -6,7 +6,7 @@
 // of the Apache License 2.0.  The full license can be found in the LICENSE
 // file.
 
-use crate::utils::*;
+use crate::{html_template, utils::*};
 
 use futures::future::{join_all, select_all};
 use js_intern::*;
@@ -63,17 +63,15 @@ impl Component for FontLoader {
         if let FontLoaderStatus::Finished = ctx.props().get_status() {
             html! {}
         } else {
-            html! {
-                <>
-                    <style>{ ":host{opacity:0!important;}" }</style>
-                    {
-                        ctx.props()
-                            .get_fonts()
-                            .iter()
-                            .map(font_test_html)
-                            .collect::<Html>()
-                    }
-                </>
+            html_template! {
+                <style>{ ":host{opacity:0!important;}" }</style>
+                {
+                    ctx.props()
+                        .get_fonts()
+                        .iter()
+                        .map(font_test_html)
+                        .collect::<Html>()
+                }
             }
         }
     }

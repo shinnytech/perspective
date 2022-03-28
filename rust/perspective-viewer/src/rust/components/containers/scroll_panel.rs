@@ -20,7 +20,7 @@ use yew::prelude::*;
 
 pub struct ScrollPanel<T>
 where
-    T: Into<Html> + Clone + PartialEq + 'static,
+    T: Into<Html> + PartialEq + 'static,
 {
     viewport_ref: NodeRef,
     viewport_height: f64,
@@ -33,10 +33,10 @@ where
     _resize_sub: Option<Subscription>,
 }
 
-#[derive(Properties, Clone)]
+#[derive(Properties)]
 pub struct ScrollPanelProps<T>
 where
-    T: Into<Html> + Clone + PartialEq + 'static,
+    T: Into<Html> + PartialEq + 'static,
 {
     pub items: Rc<Vec<T>>,
     pub row_height: f64,
@@ -75,7 +75,7 @@ where
 
 impl<T> PartialEq for ScrollPanelProps<T>
 where
-    T: Into<Html> + Clone + PartialEq + 'static,
+    T: Into<Html> + PartialEq + 'static,
 {
     fn eq(&self, _rhs: &ScrollPanelProps<T>) -> bool {
         false

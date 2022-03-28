@@ -18,7 +18,7 @@ use yew::prelude::*;
 
 pub type ExportDropDownMenuItem = DropDownMenuItem<ExportFile>;
 
-#[derive(Properties, Clone, PartialEq)]
+#[derive(Properties, PartialEq)]
 pub struct ExportDropDownMenuProps {
     pub renderer: Renderer,
     pub callback: Callback<ExportFile>,

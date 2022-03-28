@@ -22,7 +22,7 @@ use yew::prelude::*;
 wasm_bindgen_test::wasm_bindgen_test_configure!(run_in_browser);
 
 #[wasm_bindgen_test]
-pub fn test_callbacks_invoked() {
+pub async fn test_callbacks_invoked() {
     let link: WeakScope<StatusBar> = WeakScope::default();
     let token = Rc::new(Cell::new(0));
     let on_reset = Callback::from({
@@ -50,19 +50,23 @@ pub fn test_callbacks_invoked() {
         </StatusBar>
     };
 
+    await_animation_frame().await.unwrap();
     assert_eq!(token.get(), 0);
     let status_bar = link.borrow().clone().unwrap();
     status_bar.send_message(StatusBarMsg::Export);
+    await_animation_frame().await.unwrap();
     assert_eq!(token.get(), 0);
     let status_bar = link.borrow().clone().unwrap();
     status_bar.send_message(StatusBarMsg::Copy);
+    await_animation_frame().await.unwrap();
     assert_eq!(token.get(), 0);
     let status_bar = link.borrow().clone().unwrap();
     status_bar.send_message(StatusBarMsg::Reset(false));
+    await_animation_frame().await.unwrap();
     assert_eq!(token.get(), 1);
 }
 
-fn gen(stats: &Option<TableStats>) -> (HtmlElement, Session) {
+async fn gen(stats: &Option<TableStats>) -> (HtmlElement, Session) {
     let link: WeakScope<StatusBar> = WeakScope::default();
     let div = NodeRef::default();
     let on_reset = Callback::from(|_| ());
@@ -87,6 +91,7 @@ fn gen(stats: &Option<TableStats>) -> (HtmlElement, Session) {
         </StatusBar>
     };
 
+    await_animation_frame().await.unwrap();
     if let Some(stats) = stats.as_ref() {
         session.set_stats(stats.clone());
         link.borrow()
@@ -95,41 +100,42 @@ fn gen(stats: &Option<TableStats>) -> (HtmlElement, Session) {
             .send_message(StatusBarMsg::TableStatsChanged);
     }
 
+    await_animation_frame().await.unwrap();
     (div.cast::<HtmlElement>().unwrap(), session)
 }
 
 #[wasm_bindgen_test]
-pub fn test_status_uninitialized() {
+pub async fn test_status_uninitialized() {
     let stats = None;
-    let (div, session) = gen(&stats);
+    let (div, session) = gen(&stats).await;
     assert_eq!(session.get_table_stats(), stats);
     let status_class = div.query_selector("#status").unwrap().unwrap().class_name();
     assert_eq!(status_class, "uninitialized");
 }
 
 #[wasm_bindgen_test]
-pub fn test_status_initializing() {
+pub async fn test_status_initializing() {
     let stats = Some(TableStats {
         is_pivot: false,
         num_rows: None,
         virtual_rows: None,
     });
 
-    let (div, session) = gen(&stats);
+    let (div, session) = gen(&stats).await;
     assert_eq!(session.get_table_stats(), stats);
     let status_class = div.query_selector("#status").unwrap().unwrap().class_name();
     assert_eq!(status_class, "initializing");
 }
 
 #[wasm_bindgen_test]
-pub fn test_status_table_loaded() {
+pub async fn test_status_table_loaded() {
     let stats = Some(TableStats {
         is_pivot: false,
         num_rows: Some(12345678),
         virtual_rows: None,
     });
 
-    let (div, session) = gen(&stats);
+    let (div, session) = gen(&stats).await;
     assert_eq!(session.get_table_stats(), stats);
     let status_class = div.query_selector("#status").unwrap().unwrap().class_name();
     assert_eq!(status_class, "connected");
@@ -138,14 +144,14 @@ pub fn test_status_table_loaded() {
 }
 
 #[wasm_bindgen_test]
-pub fn test_status_table_and_view_loaded() {
+pub async fn test_status_table_and_view_loaded() {
     let stats = Some(TableStats {
         is_pivot: true,
         num_rows: Some(12345678),
         virtual_rows: Some(54321),
     });
 
-    let (div, session) = gen(&stats);
+    let (div, session) = gen(&stats).await;
     assert_eq!(session.get_table_stats(), stats);
     let status_class = div.query_selector("#status").unwrap().unwrap().class_name();
     assert_eq!(status_class, "connected");

@@ -96,8 +96,7 @@ impl FilterItemProps {
                     None
                 }
             }
-            (Type::Datetime, FilterTerm::Scalar(Scalar::Float(x)))
-            | (Type::Datetime, FilterTerm::Scalar(Scalar::DateTime(x))) => {
+            (Type::Datetime, FilterTerm::Scalar(Scalar::Float(x) | Scalar::DateTime(x))) => {
                 posix_to_utc_str(*x).ok()
             }
             (Type::Bool, FilterTerm::Scalar(Scalar::Bool(x))) => {
@@ -454,43 +453,38 @@ impl Component for FilterItem {
             .map(SelectItem::Option)
             .collect::<Vec<_>>();
 
-        html! {
-            <>
-                <span
-                    draggable="true"
-                    ref={ dragref }
-                    ondragstart={ dragstart }
-                    ondragend={ dragend }>
-                    {
-                        filter.0.to_owned()
-                    }
-                </span>
-                <FilterOpSelector
-                    class="filterop-selector"
-                    values={ filter_ops }
-                    selected={ filter.1 }
-                    on_select={ select }>
-                </FilterOpSelector>
+        html_template! {
+            <span
+                draggable="true"
+                ref={ dragref }
+                ondragstart={ dragstart }
+                ondragend={ dragend }>
                 {
-                    if matches!(&filter.1, FilterOp::IsNotNull | FilterOp::IsNull) {
-                        html! {}
-                    } else if let Some(Type::Bool) = col_type {
-                        html! {
-                            { input_elem }
-                        }
-                    } else {
-                        html! {
-                            <label
-                                class={ format!("input-sizer {}", type_class) }
-                                data-value={ format!("{}", filter.2) }>
-                                {
-                                    input_elem
-                                }
-                            </label>
-                        }
-                    }
+                    filter.0.to_owned()
                 }
-            </>
+            </span>
+            <FilterOpSelector
+                class="filterop-selector"
+                values={ filter_ops }
+                selected={ filter.1 }
+                on_select={ select }>
+            </FilterOpSelector>
+
+            if !matches!(&filter.1, FilterOp::IsNotNull | FilterOp::IsNull) {
+                if let Some(Type::Bool) = col_type {
+                    {
+                        input_elem
+                    }
+                } else {
+                    <label
+                        class={ format!("input-sizer {}", type_class) }
+                        data-value={ format!("{}", filter.2) }>
+                        {
+                            input_elem
+                        }
+                    </label>
+                }
+            }
         }
     }
 }

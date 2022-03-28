@@ -18,7 +18,7 @@ use super::containers::select::*;
 
 use yew::prelude::*;
 
-#[derive(Properties, Clone, PartialEq)]
+#[derive(Properties, PartialEq)]
 pub struct PluginSelectorProps {
     pub renderer: Renderer,
     pub session: Session,

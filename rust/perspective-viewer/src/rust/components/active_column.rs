@@ -61,7 +61,7 @@ impl From<ActiveColumnProps> for yew::Html {
     fn from(props: ActiveColumnProps) -> Self {
         html! {
             html! {
-                <ActiveColumn with props>
+                <ActiveColumn ..props>
                 </ActiveColumn>
             }
         }
@@ -276,21 +276,17 @@ impl Component for ActiveColumn {
                                         name.clone()
                                     }
                                 </span>
-                                {
-                                    if is_expression {
-                                        html! {
-                                            <ExpressionToolbar
-                                                session={ ctx.props().session.clone() }
-                                                renderer={ ctx.props().renderer.clone() }
-                                                dragdrop={ ctx.props().dragdrop.clone() }
-                                                name={ name.clone() }
-                                                add_expression_ref={ self.add_expression_ref.clone() }>
-                                            </ExpressionToolbar>
-                                        }
-                                    } else {
-                                        html! {}
-                                    }
+
+                                if is_expression {
+                                    <ExpressionToolbar
+                                        session={ ctx.props().session.clone() }
+                                        renderer={ ctx.props().renderer.clone() }
+                                        dragdrop={ ctx.props().dragdrop.clone() }
+                                        name={ name.clone() }
+                                        add_expression_ref={ self.add_expression_ref.clone() }>
+                                    </ExpressionToolbar>
                                 }
+
                             </span>
                             {
                                 if ctx.props().is_pivot {

@@ -93,7 +93,7 @@ impl From<InactiveColumnProps> for yew::Html {
     fn from(props: InactiveColumnProps) -> Self {
         html! {
             html! {
-                <InactiveColumn with props>
+                <InactiveColumn ..props>
                 </InactiveColumn>
             }
         }
@@ -183,21 +183,16 @@ impl Component for InactiveColumn {
                             ctx.props().name.clone()
                         }
                     </span>
-                    {
-                        if is_expression {
-                            html! {
-                                <ExpressionToolbar
-                                    session={ ctx.props().session.clone() }
-                                    renderer={ ctx.props().renderer.clone() }
-                                    dragdrop={ ctx.props().dragdrop.clone() }
-                                    name={ ctx.props().name.clone() }
-                                    add_expression_ref={ self.add_expression_ref.clone() }>
 
-                                </ExpressionToolbar>
-                            }
-                        } else {
-                            html! {}
-                        }
+                    if is_expression {
+                        <ExpressionToolbar
+                            session={ ctx.props().session.clone() }
+                            renderer={ ctx.props().renderer.clone() }
+                            dragdrop={ ctx.props().dragdrop.clone() }
+                            name={ ctx.props().name.clone() }
+                            add_expression_ref={ self.add_expression_ref.clone() }>
+
+                        </ExpressionToolbar>
                     }
                 </div>
             </div>

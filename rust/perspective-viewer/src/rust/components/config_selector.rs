@@ -22,7 +22,7 @@ use crate::*;
 use std::rc::Rc;
 use yew::prelude::*;
 
-#[derive(Properties, Clone, PartialEq)]
+#[derive(Properties, PartialEq)]
 pub struct ConfigSelectorProps {
     pub session: Session,
     pub renderer: Renderer,

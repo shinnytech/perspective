@@ -19,7 +19,7 @@ use yew::prelude::*;
 pub type CopyDropDownMenuMsg = DropDownMenuMsg;
 pub type CopyDropDownMenuItem = DropDownMenuItem<ExportMethod>;
 
-#[derive(Properties, Clone, PartialEq)]
+#[derive(Properties, PartialEq)]
 pub struct CopyDropDownMenuProps {
     pub renderer: Renderer,
     pub callback: Callback<ExportMethod>,

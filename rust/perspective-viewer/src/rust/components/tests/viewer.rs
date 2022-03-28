@@ -22,7 +22,7 @@ use yew::prelude::*;
 
 wasm_bindgen_test::wasm_bindgen_test_configure!(run_in_browser);
 
-fn set_up_html() -> (WeakScope<PerspectiveViewer>, web_sys::ShadowRoot, Session) {
+async fn set_up_html() -> (WeakScope<PerspectiveViewer>, web_sys::ShadowRoot, Session) {
     let link: WeakScope<PerspectiveViewer> = WeakScope::default();
     let root = NodeRef::default();
     let document = window().unwrap().document().unwrap();
@@ -41,6 +41,7 @@ fn set_up_html() -> (WeakScope<PerspectiveViewer>, web_sys::ShadowRoot, Session)
         </PerspectiveViewer>
     };
 
+    await_animation_frame().await.unwrap();
     let root: web_sys::ShadowRoot = root
         .cast::<HtmlElement>()
         .unwrap()
@@ -52,8 +53,8 @@ fn set_up_html() -> (WeakScope<PerspectiveViewer>, web_sys::ShadowRoot, Session)
 }
 
 #[wasm_bindgen_test]
-pub fn test_settings_closed() {
-    let (_, root, _) = set_up_html();
+pub async fn test_settings_closed() {
+    let (_, root, _) = set_up_html().await;
     for selector in ["slot", "#settings_button"].iter() {
         assert!(root
             .query_selector(selector)
@@ -67,7 +68,7 @@ pub fn test_settings_closed() {
 
 #[wasm_bindgen_test]
 pub async fn test_settings_open() {
-    let (link, root, _) = set_up_html();
+    let (link, root, _) = set_up_html().await;
     let viewer = link.borrow().clone().unwrap();
     viewer.send_message(Msg::ToggleSettingsInit(
         Some(SettingsUpdate::Update(true)),
@@ -92,7 +93,7 @@ pub async fn test_settings_open() {
 
 #[wasm_bindgen_test]
 pub async fn test_load_table() {
-    let (link, root, session) = set_up_html();
+    let (link, root, session) = set_up_html().await;
     let table = get_mock_table().await;
     let viewer = link.borrow().clone().unwrap();
     viewer.send_message(Msg::ToggleSettingsInit(
@@ -100,6 +101,7 @@ pub async fn test_load_table() {
         None,
     ));
     session.set_table(table).await.unwrap();
+    await_animation_frame().await.unwrap();
     assert_eq!(
         root.query_selector("#rows").unwrap().unwrap().inner_html(),
         "<span>3 rows</span>"

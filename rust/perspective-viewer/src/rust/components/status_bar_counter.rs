@@ -15,7 +15,7 @@ use crate::utils::*;
 use num_format::{Locale, ToFormattedString};
 use yew::prelude::*;
 
-#[derive(Properties, Clone)]
+#[derive(Properties)]
 pub struct StatusBarRowsCounterProps {
     pub stats: Option<TableStats>,
 

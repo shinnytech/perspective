@@ -22,7 +22,7 @@ use yew::prelude::*;
 /// button which cycles through the available `SortDir` states.
 pub struct SortItem {}
 
-#[derive(Properties, Clone)]
+#[derive(Properties)]
 pub struct SortItemProps {
     pub sort: Sort,
     pub idx: usize,
