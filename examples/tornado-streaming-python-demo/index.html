@@ -1,0 +1,169 @@
+<!--
+   
+   Copyright (c) 2017, the Perspective Authors.
+   
+   This file is part of the Perspective library, distributed under the terms of
+   the Apache License 2.0.  The full license can be found in the LICENSE file.
+
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
+    />
+
+    <script src="/node_modules/perspective-viewer/dist/umd/perspective-viewer.js"></script>
+    <script src="/node_modules/perspective-viewer-datagrid/dist/umd/perspective-viewer-datagrid.js"></script>
+    <script src="/node_modules/perspective-viewer-d3fc/dist/umd/perspective-viewer-d3fc.js"></script>
+    <script src="/node_modules/perspective/dist/umd/perspective.js"></script>
+
+    <link
+            rel="stylesheet"
+            crossorigin="anonymous"
+            href="/node_modules/perspective-viewer/dist/css/themes.css"
+    />
+
+    <style>
+        perspective-viewer {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+<table border="1" style="width: 1900px; height: 900px">
+    <tr style="height: 30px">
+        <td style="width:50%"><input type="button" value="save" onclick="saveTradeView();"></input></td>
+        <td style="width:50%"><input type="button" value="save" onclick="saveQuoteView();"></input></td>
+    </tr>
+    <tr>
+        <td style="width:50%">
+            <perspective-viewer id="vtrade"> </perspective-viewer>
+        </td>
+        <td style="width:50%">
+            <perspective-viewer id="vquote"> </perspective-viewer>
+        </td>
+    </tr>
+</table>
+
+<script>
+    window.addEventListener("DOMContentLoaded", async function () {
+        const vquote = document.getElementById("vquote");
+        const vtrade = document.getElementById("vtrade");
+
+        // Create a client that expects a Perspective server to accept
+        // Websocket connections at the specified URL.
+        const websocket = perspective.websocket(
+            `ws://${location.host}/websocket`
+            // "ws://192.168.139.2:8080/websocket"
+        );
+
+        /* This shows Perspective running in "server mode": the `table`
+        variable is a proxy for the `Table` we created on the server.
+
+        All operations that are possible through the Javascript API are
+        possible on the Python API as well, thus calling `view()`,
+        `schema()`, `update()` etc on `const table` will pass those
+        operations to the Python `Table`, execute the commands,
+        and return the result back to Javascript.
+        */
+        const ttrade = await websocket.open_table("report");
+        const tquote = await websocket.open_table("report");
+
+        vquote.load(tquote);
+        vquote.toggleConfig();
+
+        vtrade.load(ttrade);
+
+        // console.log(ttrade)
+        // const view = await ttrade.view({
+        //     "group_by": [
+        //         "delivery_date"
+        //     ],
+        //     "split_by": [
+        //         "product_id"
+        //     ],
+        //     "columns": [
+        //         "today profit"
+        //     ],
+        //     "expressions": [
+        //         "//today profit\n\"close_profit\" + \"position_profit\""
+        //     ],
+        //     "aggregates": {
+        //         "today profit": "sum"
+        //     }
+        // })
+        // console.log(view)
+        //
+        // const json = await view.to_json({leaves_only: true});
+        // console.log(json)
+        // const columns = ["delivery_date"]
+        // const plugin_config_columns = {}
+        // for (const c of Object.keys(json[0])) {
+        //     if (c !== '__ROW_PATH__') {
+        //         columns.push(c.split('|')[0])
+        //         plugin_config_columns[c.split('|')[0]] = {
+        //             "gradient": 133561,
+        //             "number_color_mode": "gradient"
+        //         }
+        //     }
+        // }
+        // console.log(plugin_config_columns)
+        // for (const item of json) {
+        //     for (const k in item) {
+        //         if (k !== '__ROW_PATH__') {
+        //             item[k.split('|')[0]] = item[k]
+        //         }
+        //     }
+        // }
+        // const worker = perspective.shared_worker
+        //     ? perspective.shared_worker()
+        //     : perspective;
+        // const t = await worker.table(json)
+        //
+        // vtrade.load(t);
+        // vtrade.restore(
+        //     {
+        //         "plugin": "Datagrid",
+        //         "plugin_config": {
+        //             "columns": plugin_config_columns,
+        //             "editable": false,
+        //             "scroll_lock": true
+        //         },
+        //         // "settings": false,
+        //         // "group_by": [
+        //         //     "delivery_date"
+        //         // ],
+        //         // "split_by": [
+        //         //     "product_id"
+        //         // ],
+        //         "columns": columns,
+        //         // "filter": [],
+        //         // "sort": [],
+        //         "expressions": [
+        //             "//delivery_date\n\"__ROW_PATH__\"",
+        //         ],
+        //         // "aggregates": {
+        //         //     "today profit": "sum"
+        //         // }
+        //     }
+        // );
+        vtrade.toggleConfig();
+    });
+
+    function saveQuoteView(){
+        const vquote = document.getElementById("vquote");
+        vquote.save().then((data) => { console.log(data)});
+    }
+
+    function saveTradeView(){
+        const vtrade = document.getElementById("vtrade");
+        vtrade.save().then((data) => { console.log(data)});
+    }
+</script>
+</body>
+</html>
