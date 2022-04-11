@@ -80,6 +80,7 @@ set(ARROW_SRCS
     ${CMAKE_BINARY_DIR}/arrow-src/cpp/src/arrow/util/bit_block_counter.cc
     ${CMAKE_BINARY_DIR}/arrow-src/cpp/src/arrow/util/bit_run_reader.cc
     ${CMAKE_BINARY_DIR}/arrow-src/cpp/src/arrow/util/bit_util.cc
+    
     ${CMAKE_BINARY_DIR}/arrow-src/cpp/src/arrow/util/bitmap.cc
     ${CMAKE_BINARY_DIR}/arrow-src/cpp/src/arrow/util/bitmap_builders.cc
     ${CMAKE_BINARY_DIR}/arrow-src/cpp/src/arrow/util/bitmap_ops.cc

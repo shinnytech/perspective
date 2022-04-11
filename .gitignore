@@ -197,3 +197,6 @@ results.debug.json
 
 tools/perspective-build/lib
 docs/.docusaurus
+
+boost_1_71_0
+.vs
