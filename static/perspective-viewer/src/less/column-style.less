@@ -1,0 +1,163 @@
+/******************************************************************************
+ *
+ * Copyright (c) 2017, the Perspective Authors.
+ *
+ * This file is part of the Perspective library, distributed under the terms of
+ * the Apache License 2.0.  The full license can be found in the LICENSE file.
+ *
+ */
+
+@import "./radio-list.less";
+
+:host {
+    position: fixed;
+    z-index: 10000;
+    padding: 6px;
+    outline: none;
+    background-color: #ffffff;
+    font-size: 12px;
+    font-weight: 300;
+    border: inherit;
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
+    user-select: none;
+
+    #column-style-container {
+        margin-bottom: 4px;
+        width: 120px;
+    }
+
+    label {
+        font-size: 8px;
+        width: 100%;
+    }
+
+    input#color-selected,
+    input#fore-selected,
+    input#back-selected,
+    input#format-selected {
+        float: left;
+    }
+
+    input#gradient-param {
+        margin-bottom: 4px;
+    }
+
+    input.parameter {
+        max-width: 80px;
+        background: none;
+        color: inherit;
+        border: 0px solid transparent;
+        outline: none;
+    }
+
+    input.parameter[type="number"] {
+        text-align:right;
+        border-bottom-width: 1px;
+        border-color: var(
+            --input--border-color,
+            var(--inactive--color, inherit)
+        );
+    }
+
+    .indent {
+        margin-left: 24px;
+    }
+
+    input[type="checkbox"],
+    & > div > div > span:first-child {
+        width: 24px;
+        margin: 0;
+    }
+
+    input[type="checkbox"] {
+        appearance: var(--column-style-checkbox--appearance, auto);
+        font-family: var(--button--font-family, inherit);
+        font-size: 16px;
+        text-align: center;
+
+        &:checked:after {
+            content: var(--column-style-checkbox-checked--content, none);
+        }
+
+        &:not([disabled]):checked:after {
+            color: var(--active--color, red);
+        }
+
+        &:after {
+            content: var(--column-style-checkbox-unchecked--content, none);
+            color: var(--inactive--color, #999);
+        }
+    }
+
+    input[type="radio"] {
+        appearance: var(--column-style-radio--appearance, auto);
+        font-family: var(--button--font-family, inherit);
+        font-size: 16px;
+        font-feature-settings: "liga";
+        text-align: center;
+
+        &:checked:after {
+            content: var(--column-style-radio-checked--content, none);
+            color: var(--active--color, red);
+        }
+
+        &:after {
+            content: var(--column-style-radio-unchecked--content, none);
+            color: var(--inactive--color, #999);
+        }
+    }
+
+    div.section {
+        margin-bottom: 8px;
+        flex: 1 1 100%;
+    }
+
+    div.inner_section {
+        margin-top: 4px;
+    }
+
+    div.row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    input[type="color"] {
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
+        padding: 0;
+        margin-right: 4px;
+
+        &:before {
+            position: absolute;
+            font-family: var(--button--font-family, inherit);
+            margin-top: 11px;
+            margin-left: 12px;
+            font-size: 12px;
+            content: var(--column-style-pos-color--content, "+");
+            color: white;
+        }
+
+        &#neg-color-param:before {
+            content: var(--column-style-neg-color--content, "-");
+        }
+    }
+
+    .operator {
+        font-family: "Roboto Mono", monospace;
+        white-space: pre;
+    }
+
+    input[disabled]:after {
+        opacity: 0.5;
+    }
+
+    input.parameter[disabled] {
+        opacity: 0.5;
+    }
+
+    input[type=checkbox]:not(:disabled) {
+        cursor: pointer;
+    }
+}

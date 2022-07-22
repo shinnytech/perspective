@@ -1,0 +1,219 @@
+/******************************************************************************
+ *
+ * Copyright (c) 2017, the Perspective Authors.
+ *
+ * This file is part of the Perspective library, distributed under the terms
+ * of the Apache License 2.0.  The full license can be found in the LICENSE
+ * file.
+ *
+ */
+
+:host {
+    #status_bar {
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+
+        .section {
+            box-shadow: 8px 0px 0px -7px var(--inactive--color, #ccc);
+            display: flex;
+            align-items: center;
+
+            &:nth-child(2) {
+                flex: 1;
+            }
+
+            &:nth-child(3) {
+                span:first-child:not(:last-child) {
+                    margin-right: 5px;
+                }
+
+                span:last-child:not(:first-child) {
+                    margin-left: 5px;
+                }
+            }
+        }
+
+        #menu-bar {
+            overflow: hidden;
+            .button {
+                height: 36px;
+            }
+        }
+
+        #plugin-settings {
+            margin-left: auto;
+        }
+
+        #counter-arrow::before {
+            content: var(--status-bar-counter--content, "arrow_back");
+        }
+
+        span {
+            font-size: 12px;
+            margin: 0px 10px;
+            user-select: none;
+            height: 100%;
+            line-height: 36px;
+
+            &:before {
+                text-transform: none;
+                margin-right: 4px;
+                font-family: var(--button--font-family, inherit);
+                vertical-align: bottom;
+            }
+
+            &:hover {
+                color: inherit;
+            }
+        }
+
+        span#rows {
+            margin-left: 2px;
+        }
+
+        span.icon {
+            font-family: var(--button--font-family, inherit);
+            height: 100%;
+            line-height: 36px;
+            margin: 0;
+        }
+
+        span#status {
+            &:before {
+                color: #ccc;
+                content: var(--status-icon--content, "\2B24");
+            }
+
+            &.connected,
+            &.error,
+            &.initializing {
+                opacity: 1;
+            }
+
+            &.connected:before {
+                color: rgb(51, 159, 77);
+            }
+
+            &.initializing:before {
+                color: rgb(223, 198, 57);
+            }
+
+            &.error:before {
+                color: rgb(252, 64, 52);
+            }
+        }
+
+        span#export {
+            &:before {
+                content: var(--export-button-icon--content, "\2193");
+            }
+        }
+
+        span#lock {
+            &:before {
+                content: "lock_open";
+            }
+        }
+
+        span#reset {
+            &:before {
+                content: var(--reset-button-icon--content, "\27F3");
+            }
+        }
+
+        span#copy {
+            &:before {
+                content: var(--copy-button-icon--content, "\1F4CB");
+            }
+        }
+
+        span#theme {
+            display: flex;
+            &:before {
+                content: var(--theme-button-icon--content, "T");
+            }
+        }
+
+        span.button {
+            margin: 0px;
+            padding: 0 5px 0px 10px;
+            transition: background-color 0.2s;
+            color: var(--inactive--color, #ccc);
+            & > span,
+            & > .dropdown-width-container {
+                pointer-events: none;
+                overflow: hidden;
+                display: none;
+                font-weight: 300;
+            }
+
+            &:before {
+                font-size: 14px;
+            }
+
+            &:hover,
+            &.modal-target {
+                min-width: 75px;
+                color: inherit;
+                cursor: pointer;
+                background-color: rgba(0, 0, 0, 0.05);
+                transition: none;
+
+                & > span {
+                    display: contents;
+                }
+
+                & > .dropdown-width-container {
+                    overflow: visible;
+                    display: inline;
+                    pointer-events: all;
+                    & > select {
+                        cursor: pointer;
+                        margin-left: -28px;
+                        padding-left: 28px;
+                        width: calc(100% + 28px);
+                        height: 36px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Status bar status icon animations
+:host #status_bar.updating span#status {
+    animation-name: status-bar-updating;
+    animation-duration: var(--status-icon-updating--animation-duration, 1s);
+    animation-iteration-count: infinite;
+}
+
+:host #status_bar span#status {
+    animation-name: status-bar;
+    animation-duration: var(--status-icon--animation-duration, 0.5s);
+    animation-iteration-count: 1;
+}
+
+@keyframes status-bar-updating {
+    0% {
+        filter: var(--status-icon-updating-keyframes-start--filter, opacity(1));
+        transform: var(--status-icon-updating-keyframes-start--transform, none);
+    }
+
+    100% {
+        filter: var(--status-icon-updating-keyframes-end--filter, opacity(0.2));
+        transform: var(--status-icon-updating-keyframes-end--transform, none);
+    }
+}
+
+@keyframes status-bar {
+    0% {
+        filter: var(--status-icon-keyframes-start--filter, saturate(4));
+        transform: var(--status-icon-keyframes-start--transform, none);
+    }
+
+    100% {
+        filter: var(--status-icon-keyframes-end--filter, saturate(1));
+        transform: var(--status-icon-keyframes-end--transform, none);
+    }
+}
