@@ -25,7 +25,7 @@ namespace apachearrow {
             PSP_COMPLAIN_AND_ABORT(ss.str());
         } else {
             auto batch_reader = *status;
-            auto status5 = batch_reader->ReadAll(&table);
+            auto status5 = batch_reader->ToTable().Value(&table);
             if (!status5.ok()) {
                 std::stringstream ss;
                 ss << "Failed to read stream record batch: "

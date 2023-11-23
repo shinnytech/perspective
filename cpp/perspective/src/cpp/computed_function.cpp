@@ -536,7 +536,7 @@ namespace computed_function {
             return rval;
         }
 
-        rval.set(m_expression_vocab.intern(result.ToString()));
+        rval.set(m_expression_vocab.intern(std::string(result.data(), result.size())));
 
         return rval;
     }
